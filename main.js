@@ -56,6 +56,95 @@ const articles = {
         <h1>Drivers Token v3</h1>
         <p>Instrucciones para técnicos de Nivel 1.</p>
         <p>Descargar el paquete de drivers desde la intranet e instalar con permisos de administrador.</p>
+    `,
+    'error500': `
+        <span class="category-tag">Servidor</span>
+        <h1>Error 500: Internal Server Error</h1>
+        <hr style="margin: 1rem 0;">
+        <p>Este error indica un problema interno del servidor, generalmente relacionado con la base de datos o configuración del sistema.</p>
+        <h3 style="margin-top: 1rem;">Causas comunes:</h3>
+        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+            <li>Conexión a base de datos fallida.</li>
+            <li>Configuración incorrecta de parámetros del sistema.</li>
+            <li>Problemas de memoria o recursos del servidor.</li>
+        </ul>
+        <h3>Solución:</h3>
+        <ol style="margin-left: 1.5rem;">
+            <li>Revisar logs del servidor para detalles específicos.</li>
+            <li>Verificar conectividad a la base de datos.</li>
+            <li>Reiniciar servicios relacionados.</li>
+        </ol>
+    `,
+    'certificado': `
+        <span class="category-tag">Certificación Digital</span>
+        <h1>Certificado Digital Expirado</h1>
+        <hr style="margin: 1rem 0;">
+        <p>Los certificados digitales tienen una vigencia limitada y deben renovarse periódicamente.</p>
+        <h3>Pasos para renovación:</h3>
+        <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+            <li>Acceder al portal de certificación del SIN.</li>
+            <li>Solicitar renovación del certificado.</li>
+            <li>Instalar el nuevo certificado en el sistema.</li>
+            <li>Actualizar configuraciones en la aplicación.</li>
+        </ol>
+        <div class="code-block">
+            POST /api/v2/certificacion/renovar<br>
+            Body: { "certificado_id": "ID_DEL_CERTIFICADO" }
+        </div>
+    `,
+    'sincronizacion': `
+        <span class="category-tag">Sincronización</span>
+        <h1>Problemas de Sincronización con SIN</h1>
+        <hr style="margin: 1rem 0;">
+        <p>La sincronización con el Servicio de Impuestos Nacionales es crucial para mantener la integridad de los datos fiscales.</p>
+        <h3>Errores comunes:</h3>
+        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+            <li>Diferencia de fecha/hora entre sistemas.</li>
+            <li>Problemas de conectividad a internet.</li>
+            <li>Certificados no válidos.</li>
+        </ul>
+        <h3>Soluciones:</h3>
+        <ol style="margin-left: 1.5rem;">
+            <li>Sincronizar reloj del sistema con NTP.</li>
+            <li>Verificar conexión a internet y firewalls.</li>
+            <li>Renovar certificados si es necesario.</li>
+        </ol>
+    `,
+    'validacion': `
+        <span class="category-tag">Validación</span>
+        <h1>Errores de Validación de Datos</h1>
+        <hr style="margin: 1rem 0;">
+        <p>Los datos enviados al SIN deben cumplir con formatos específicos para ser aceptados.</p>
+        <h3>Validaciones comunes:</h3>
+        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+            <li>NIT del contribuyente debe ser válido.</li>
+            <li>Fechas deben estar en formato correcto.</li>
+            <li>Montos deben ser numéricos positivos.</li>
+        </ul>
+        <h3>Corrección:</h3>
+        <ol style="margin-left: 1.5rem;">
+            <li>Revisar formato de datos de entrada.</li>
+            <li>Usar herramientas de validación integradas.</li>
+            <li>Consultar documentación del SIN para formatos.</li>
+        </ol>
+    `,
+    'conexion': `
+        <span class="category-tag">Conectividad</span>
+        <h1>Pérdida de Conexión al SIN</h1>
+        <hr style="margin: 1rem 0;">
+        <p>Problemas de conectividad pueden impedir el envío de facturas electrónicas.</p>
+        <h3>Diagnóstico:</h3>
+        <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+            <li>Verificar conexión a internet.</li>
+            <li>Probar ping a servidores del SIN.</li>
+            <li>Revisar configuración de proxy/firewall.</li>
+        </ol>
+        <h3>Soluciones:</h3>
+        <ul style="margin-left: 1.5rem;">
+            <li>Configurar VPN si es necesario.</li>
+            <li>Actualizar certificados de seguridad.</li>
+            <li>Contactar soporte técnico del SIN.</li>
+        </ul>
     `
 };
 
@@ -108,7 +197,7 @@ function showUserIncidents(index){ const users=getUsers(); const user=users[inde
 
 function getIncidents(){ return JSON.parse(localStorage.getItem('incidents')||'[]'); }
 function saveIncidents(arr){ localStorage.setItem('incidents',JSON.stringify(arr)); }
-function addIncident(){ const userIndex=document.getElementById('userSelect').value; if(userIndex===''){alert('Seleccione usuario'); return;} const users=getUsers(); const user=users[userIndex]; const categoria=document.getElementById('categoria').value; const prioridad=document.getElementById('prioridad').value; const desc=document.getElementById('descripcion').value; const incidents=getIncidents(); const id=Math.floor(Math.random()*90000)+10000; incidents.push({id,user:user.name,categoria,prioridad,descripcion:desc,estado:'⏳ Abierto'}); saveIncidents(incidents); loadIncidents(); document.getElementById('incidentForm').reset(); }
+function addIncident(){ const userIndex=document.getElementById('userSelect').value; if(userIndex===''){alert('Seleccione usuario'); return;} const users=getUsers(); const user=users[userIndex]; const categoria=document.getElementById('categoria').value; const prioridad=document.getElementById('prioridad').value; const desc=document.getElementById('descripcion').value; const incidents=getIncidents(); const id=Math.floor(Math.random()*90000)+10000; incidents.push({id,user:user.name,categoria,prioridad,descripcion:desc,estado:'⏳ Abierto'}); saveIncidents(incidents); loadIncidents(); initSupportChart(); document.getElementById('incidentForm').reset(); }
 function loadIncidents(){ const tbody=document.querySelector('#incidentTable tbody'); if(!tbody) return; tbody.innerHTML=''; getIncidents().forEach(i=>{ const row=tbody.insertRow(); row.innerHTML=`<td>#${i.id}</td><td>${i.user}</td><td>${i.categoria}</td><td><span class="badge ${i.prioridad==='Alta'?'high':'med'}">${i.prioridad}</span></td><td>${i.estado}</td>`; }); updateStats(); }
 function updateStats(){ const incidents=getIncidents(); const open=incidents.filter(i=>i.estado.includes('Abierto')).length; const counter=document.getElementById('count-open'); if(counter) counter.innerText=open; const ucount=document.getElementById('count-users'); if(ucount) ucount.innerText=getUsers().length; }
 
@@ -119,12 +208,16 @@ function initSupportChart(){
     const canvas = document.getElementById('supportChart');
     if(!canvas) return;
     const ctx = canvas.getContext('2d');
+    const incidents = getIncidents();
+    const resueltos = incidents.filter(i => i.estado.includes('Resuelto') || i.estado.includes('Cerrado')).length;
+    const proceso = incidents.filter(i => i.estado.includes('Proceso')).length;
+    const pendientes = incidents.filter(i => i.estado.includes('Abierto')).length;
     new Chart(ctx, {
         type: 'doughnut',
         data: {
             labels: ['Resueltos', 'En Proceso', 'Pendientes'],
             datasets: [{
-                data: [65,20,15],
+                data: [resueltos, proceso, pendientes],
                 backgroundColor: ['#2e7d32','#f9a825','#d32f2f'],
                 borderWidth:0
             }]
@@ -148,5 +241,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.querySelector('input[placeholder*="Buscar"]') || document.querySelector('input[onkeyup]');
     if(searchInput && typeof searchInput.onkeyup === 'function') {
         searchInput.onkeyup = function(){ filterCards(this.value); };
+    }
+    // Initialize color picker if on personalization page
+    const picker = document.getElementById('primaryColorPicker');
+    if(picker){
+        picker.addEventListener('input', e => setPrimaryColor(e.target.value));
+        picker.value = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
     }
 });

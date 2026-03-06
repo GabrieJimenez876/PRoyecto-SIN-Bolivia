@@ -65,3 +65,10 @@ table th,table td{padding:12px;text-align:left;border-bottom:1px solid var(--bor
 input:checked+.slider{background-color:var(--primary);}
 .slider:before{position:absolute;content:"";height:14px;width:14px;left:3px;bottom:3px;background:white;transition:.4s;border-radius:50%;}
 input:checked+.slider:before{transform:translateX(20px);}
+.btn-submit{background:var(--primary);color:white;border:none;padding:10px 15px;border-radius:6px;cursor:pointer;font-weight:600;transition:.3s;}
+.btn-submit:hover{filter:brightness(1.2);}
+textarea,select,input[type="text"]{width:100%;margin-bottom:12px;padding:10px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;}
+.badge{padding:4px 8px;border-radius:4px;font-size:.75rem;font-weight:bold;}
+.bg-urgent{background:#ffebee;color:#c62828;}
+.bg-process{background:#e3f2fd;color:#1565c0;}
+.chart-container{position:relative;height:250px;width:100%;}

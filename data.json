@@ -1,4 +1,10 @@
 {
-  "users": [],
+  "users": [
+    {"name": "Apaza Quispe Carlos Andres", "role": "Técnico"},
+    {"name": "Jimenez Tarqui Gabriel Isaac", "role": "Técnico"},
+    {"name": "Pamela Esther Canaza Luna", "role": "Técnico"},
+    {"name": "Jorge Luis Huanca Alarcon", "role": "Técnico"},
+    {"name": "Luis Donato Quispe Ramirez", "role": "Técnico"}
+  ],
   "incidents": []
 }

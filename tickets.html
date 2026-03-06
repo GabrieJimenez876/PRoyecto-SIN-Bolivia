@@ -25,7 +25,24 @@
             <h1>Gestión de Tickets</h1>
             <button class="btn-theme" onclick="toggleTheme()">🌓 Cambiar Tema</button>
         </header>
-        <p>Esta sección todavía se encuentra en construcción. Aquí irán las herramientas para manejar tickets de soporte.</p>
+        <div class="card">
+            <h2>Lista de Incidentes</h2>
+            <table class="table" id="incidentTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Categoría</th>
+                        <th>Prioridad</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Incidentes se cargarán aquí -->
+                </tbody>
+            </table>
+        </div>
     </main>
     <script src="main.js"></script>
 </body>

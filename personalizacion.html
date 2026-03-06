@@ -30,14 +30,6 @@
             <h2>Color primario</h2>
             <input type="color" id="primaryColorPicker" value="#003366">
         </div>
-        <script>
-            const picker = document.getElementById('primaryColorPicker');
-            if(picker){
-                picker.addEventListener('input', e=> setPrimaryColor(e.target.value));
-                const computed = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
-                if(computed) picker.value = computed;
-            }
-        </script>
     </main>
     <script src="main.js"></script>
 </body>
