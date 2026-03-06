@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios | SIGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+
+    <nav class="sidebar">
+        <h2 style="margin-bottom: 2rem;">SIN Bolivia</h2>
+        <ul class="nav-links">
+            <li><a href="index.html">📊 Dashboard Global</a></li>
+            <li><a href="tickets.html">🎫 Gestión de Tickets</a></li>
+            <li><a href="conocimiento.html">📚 Base de Conocimientos</a></li>
+            <li><a href="usuarios.html">👥 Usuarios Técnicos</a></li>
+            <li><a href="reportes.html">📈 Reportes</a></li>
+            <li><a href="configuracion.html">⚙️ Configuración</a></li>
+            <li><a href="personalizacion.html">🎨 Personalización</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <header style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+            <h1>Administración de Personal Técnico</h1>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <button class="btn-add" onclick="goToNewUser()">+ Nuevo Usuario</button>
+                <button class="btn-theme" onclick="toggleTheme()">🌓</button>
+            </div>
+        </header>
+
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>Lista de Operadores</h2>
+                <input type="text" placeholder="Buscar técnico..." style="padding: 8px; border-radius: 5px; border: 1px solid var(--border);">
+            </div>
+
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>Nombre del Técnico</th>
+                        <th>Rol / Nivel</th>
+                        <th>Tickets Asignados</th>
+                        <th>Estado</th>
+                        <th>Última Conexión</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><div class="avatar" style="background: #1565c0;">GJ</div> Gabriel Isaac J.</td>
+                        <td><span class="role-badge admin">Administrador TI</span></td>
+                        <td>5</td>
+                        <td><span class="status-dot online"></span> Activo</td>
+                        <td>Ahora mismo</td>
+                    </tr>
+                    <tr>
+                        <td><div class="avatar" style="background: #2e7d32;">RM</div> Ricardo Mendoza</td>
+                        <td><span class="role-badge tecnico">Técnico Nivel 2</span></td>
+                        <td>12</td>
+                        <td><span class="status-dot online"></span> Activo</td>
+                        <td>Hace 15 min</td>
+                    </tr>
+                    <tr>
+                        <td><div class="avatar" style="background: #f9a825;">AS</div> Ana Suárez</td>
+                        <td><span class="role-badge tecnico">Soporte SIAT</span></td>
+                        <td>8</td>
+                        <td><span class="status-dot"></span> Offline</td>
+                        <td>Ayer, 18:30</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="main.js"></script>
+</body>
+</html>

@@ -8,13 +8,12 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --primary: #003366; /* Azul Impuestos */
-            --secondary: #d32f2f; /* Rojo acento */
+            --primary: #003366;
+            --secondary: #d32f2f;
             --bg: #f4f7f6;
             --card-bg: #ffffff;
             --text: #333;
             --border: #e0e0e0;
-            --transition: all 0.3s ease;
         }
 
         [data-theme="dark"] {
@@ -25,30 +24,40 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Inter', sans-serif;
+        
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
             background-color: var(--bg);
             color: var(--text);
-            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
         }
 
-        /* --- Layout --- */
+        /* SIDEBAR */
         .sidebar {
             width: 260px;
             height: 100vh;
             background: var(--primary);
             position: fixed;
+            left: 0; top: 0;
             color: white;
             padding: 2rem 1rem;
+            z-index: 100;
         }
 
+        .nav-links li { list-style: none; margin: 1rem 0; }
+        .nav-links a { color: white; text-decoration: none; opacity: 0.8; font-size: 0.9rem; }
+        .nav-links a:hover { opacity: 1; }
+
+        /* MAIN CONTENT */
         .main-content {
             margin-left: 260px;
             padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* --- Header --- */
         header {
             display: flex;
             justify-content: space-between;
@@ -56,39 +65,31 @@
             margin-bottom: 2rem;
         }
 
-        .btn-theme {
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: var(--card-bg);
-            color: var(--text);
-        }
-
-        /* --- Dashboard Cards --- */
+        /* STATS */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
         .stat-card {
             background: var(--card-bg);
-            padding: 1.5rem;
+            padding: 1.2rem;
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             border-left: 5px solid var(--primary);
         }
 
-        .stat-card h3 { font-size: 0.9rem; opacity: 0.8; }
-        .stat-card p { font-size: 1.8rem; font-weight: 700; margin-top: 0.5rem; }
+        .stat-card h3 { font-size: 0.85rem; opacity: 0.8; }
+        .stat-card p { font-size: 1.5rem; font-weight: bold; margin-top: 5px; }
 
-        /* --- Main Layout Grid --- */
+        /* CONTENT GRID */
         .content-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
+            align-items: start;
         }
 
         .card {
@@ -96,217 +97,231 @@
             padding: 1.5rem;
             border-radius: 12px;
             border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
         }
 
-        /* --- Form & Table --- */
-        table {
+        /* CHART FIX */
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+
+        /* TABLES */
+        .table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 1rem;
         }
-
-        th, td {
+        
+        .table th, .table td {
             text-align: left;
-            padding: 12px;
+            padding: 12px 10px;
             border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
         }
 
-        .badge {
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-
-        .high { background: #ffebee; color: #c62828; }
-        .med { background: #fff3e0; color: #ef6c00; }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            background: var(--bg);
-            color: var(--text);
-        }
-
+        /* FORMS & BUTTONS */
         .btn-submit {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 10px 15px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
+            transition: 0.3s;
         }
 
-        .btn-submit:hover { opacity: 0.9; }
+        .btn-submit:hover { filter: brightness(1.2); }
 
-        .nav-links li {
-            list-style: none;
-            margin: 1.5rem 0;
-            cursor: pointer;
-            opacity: 0.8;
+        textarea, select, input {
+            width: 100%;
+            margin-bottom: 12px;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-family: inherit;
         }
 
-        .nav-links li:hover { opacity: 1; font-weight: bold; }
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        .bg-urgent { background: #ffebee; color: #c62828; }
+        .bg-process { background: #e3f2fd; color: #1565c0; }
     </style>
 </head>
 <body>
 
     <nav class="sidebar">
-        <h2 style="margin-bottom: 2rem;">SIN Bolivia</h2>
+        <h2 style="margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">SIN Bolivia</h2>
         <ul class="nav-links">
-            <li>📊 Dashboard Global</li>
-            <li>🎫 Gestión de Tickets</li>
-            <li>📚 Base de Conocimientos</li>
-            <li>👥 Usuarios Técnicos</li>
-            <li>⚙️ Configuración</li>
+            <li><a href="index.html">📊 Dashboard Global</a></li>
+            <li><a href="tickets.html">🎫 Gestión de Tickets</a></li>
+            <li><a href="conocimiento.html">📚 Base de Conocimientos</a></li>
+            <li><a href="usuarios.html">👥 Usuarios Técnicos</a></li>
+            <li><a href="reportes.html">📈 Reportes</a></li>
+            <li><a href="configuracion.html">⚙️ Configuración</a></li>
         </ul>
     </nav>
 
     <main class="main-content">
         <header>
             <h1>Gestión de Incidentes (SIGI)</h1>
-            <div>
-                <button class="btn-theme" onclick="toggleTheme()">🌓 Cambiar Tema</button>
-            </div>
+            <button class="btn-submit" onclick="toggleTheme()">🌓 Cambiar Tema</button>
         </header>
 
         <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Incidentes Abiertos</h3>
-                <p id="count-open">24</p>
-            </div>
-            <div class="stat-card" style="border-left-color: #2e7d32;">
-                <h3>Resueltos (Hoy)</h3>
-                <p>12</p>
-            </div>
-            <div class="stat-card" style="border-left-color: #f9a825;">
-                <h3>MTTR Promedio</h3>
-                <p>1.4 hrs</p>
-            </div>
-            <div class="stat-card" style="border-left-color: var(--secondary);">
-                <h3>SLA en Riesgo</h3>
-                <p>3</p>
-            </div>
+            <div class="stat-card"><h3>Abiertos</h3><p id="count-open">1</p></div>
+            <div class="stat-card" style="border-left-color: #2e7d32;"><h3>Resueltos (Hoy)</h3><p>0</p></div>
+            <div class="stat-card" style="border-left-color: #f9a825;"><h3>MTTR Promedio</h3><p>1.4 hrs</p></div>
+            <div class="stat-card" style="border-left-color: var(--secondary);"><h3>SLA en Riesgo</h3><p>0</p></div>
+            <div class="stat-card" style="border-left-color: #673ab7;"><h3>Usuarios</h3><p id="count-users">2</p></div>
         </div>
 
         <div class="content-grid">
-            <section class="card">
-                <h2>Registrar Nuevo Incidente</h2>
-                <form id="incidentForm">
-                    <div style="display: flex; gap: 10px;">
-                        <input type="text" id="contribuyente" placeholder="Nombre/ID del Contribuyente" required>
-                        <select id="categoria">
-                            <option value="facturacion">Facturación Electrónica</option>
-                            <option value="declaracion">Declaración Jurada</option>
-                            <option value="tecnico">Hardware / Red</option>
-                        </select>
+            <div class="col">
+                <section class="card">
+                    <h2>Registrar Nuevo Incidente</h2>
+                    <form id="incidentForm">
+                        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 12px;">
+                            <select id="userSelect" required style="margin-bottom: 0;">
+                                <option value="Juan Perez">Juan Perez (Contribuyente)</option>
+                                <option value="Maria Lopez">Maria Lopez (Administrativo)</option>
+                            </select>
+                            <button type="button" class="btn-submit" onclick="promptNewUser()" style="white-space: nowrap;">+ Nuevo</button>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <select id="categoria">
+                                <option value="Facturación">Facturación Electrónica</option>
+                                <option value="SIAT">Sistema SIAT</option>
+                                <option value="Hardware">Hardware / Red</option>
+                            </select>
+                            <select id="prioridad">
+                                <option value="Alta">Crítica</option>
+                                <option value="Media">Media</option>
+                                <option value="Baja">Baja</option>
+                            </select>
+                        </div>
+                        <textarea id="descripcion" rows="3" placeholder="Describa el problema técnico aquí..."></textarea>
+                        <button type="button" class="btn-submit" style="width:100%" onclick="addIncident()">Generar Ticket</button>
+                    </form>
+                </section>
+
+                <section class="card">
+                    <h2>Tickets Recientes</h2>
+                    <div style="overflow-x: auto;">
+                        <table id="incidentTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Usuario</th>
+                                    <th>Prioridad</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#1001</td>
+                                    <td>Juan Perez</td>
+                                    <td><span class="badge bg-urgent">Alta</span></td>
+                                    <td><span class="badge bg-process">En espera</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <textarea id="descripcion" rows="4" placeholder="Descripción detallada del incidente técnico..."></textarea>
-                    <div style="display: flex; gap: 10px; align-items: center;">
-                        <label>Prioridad:</label>
-                        <select id="prioridad" style="width: 150px;">
-                            <option value="Alta">Crítica</option>
-                            <option value="Media">Media</option>
-                            <option value="Baja">Baja</option>
-                        </select>
-                        <button type="button" class="btn-submit" onclick="addIncident()">Generar Ticket</button>
+                </section>
+            </div>
+
+            <div class="col">
+                <section class="card">
+                    <h2>Rendimiento de Soporte</h2>
+                    <div class="chart-container">
+                        <canvas id="supportChart"></canvas>
                     </div>
-                </form>
+                </section>
 
-                <hr style="margin: 2rem 0; border: 0.5px solid var(--border);">
-
-                <h2>Tickets Recientes</h2>
-                <table id="incidentTable">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Contribuyente</th>
-                            <th>Categoría</th>
-                            <th>Prioridad</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>#10293</td>
-                            <td>Juan Pérez</td>
-                            <td>Facturación</td>
-                            <td><span class="badge high">Crítica</span></td>
-                            <td>⏳ Pendiente</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <section class="card">
-                <h2>Rendimiento de Soporte</h2>
-                <canvas id="supportChart" height="300"></canvas>
-                <div style="margin-top: 2rem;">
-                    <h3>Base de Conocimientos</h3>
-                    <ul style="margin-top: 10px; font-size: 0.9rem; line-height: 1.8;">
-                        <li>🔹 Error 403 en Facturación Electrónica</li>
-                        <li>🔹 Reseteo de credenciales SIAT</li>
-                        <li>🔹 Configuración de firmas digitales</li>
+                <section class="card">
+                    <h2>Base de Conocimientos Rápida</h2>
+                    <ul style="padding-left: 20px; font-size: 0.85rem; line-height: 2;">
+                        <li><a href="#" style="color: var(--primary);">🔹 Error 403 en envío de facturas</a></li>
+                        <li><a href="#" style="color: var(--primary);">🔹 Cómo resetear token digital</a></li>
+                        <li><a href="#" style="color: var(--primary);">🔹 Configuración de red LAN Distrital</a></li>
                     </ul>
-                </div>
-            </section>
+                </section>
+            </div>
         </div>
     </main>
 
     <script>
-        // Lógica de Temas
+        // --- LÓGICA DE INTERFAZ ---
         function toggleTheme() {
             const body = document.body;
-            const currentTheme = body.getAttribute('data-theme');
-            body.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+            body.dataset.theme = body.dataset.theme === 'dark' ? 'light' : 'dark';
         }
 
-        // Simulación de agregar incidente
+        function promptNewUser() {
+            const nombre = prompt("Nombre del nuevo usuario:");
+            if (nombre) {
+                const select = document.getElementById('userSelect');
+                const option = document.createElement('option');
+                option.value = nombre;
+                option.text = nombre;
+                select.add(option);
+                alert("Usuario añadido a la lista.");
+            }
+        }
+
         function addIncident() {
-            const contribuyente = document.getElementById('contribuyente').value;
-            const categoria = document.getElementById('categoria').value;
-            const prioridad = document.getElementById('prioridad').value;
-            
-            if(!contribuyente) return alert("Ingrese el nombre del contribuyente");
+            const user = document.getElementById('userSelect').value;
+            const cat = document.getElementById('categoria').value;
+            const prio = document.getElementById('prioridad').value;
+            const desc = document.getElementById('descripcion').value;
+
+            if(!desc) return alert("Por favor escriba una descripción");
 
             const table = document.getElementById('incidentTable').getElementsByTagName('tbody')[0];
             const newRow = table.insertRow(0);
-            const id = Math.floor(Math.random() * 90000) + 10000;
-
+            
+            const id = Math.floor(Math.random() * 9000) + 1000;
+            
             newRow.innerHTML = `
                 <td>#${id}</td>
-                <td>${contribuyente}</td>
-                <td>${categoria.charAt(0).toUpperCase() + categoria.slice(1)}</td>
-                <td><span class="badge ${prioridad === 'Alta' ? 'high' : 'med'}">${prioridad}</span></td>
-                <td>⏳ Abierto</td>
+                <td>${user}</td>
+                <td><span class="badge ${prio === 'Alta' ? 'bg-urgent' : 'bg-process'}">${prio}</span></td>
+                <td><span class="badge bg-process">Nuevo</span></td>
             `;
 
-            document.getElementById('incidentForm').reset();
-            // Actualizar contador
-            const counter = document.getElementById('count-open');
-            counter.innerText = parseInt(counter.innerText) + 1;
+            document.getElementById('descripcion').value = "";
+            
+            // Actualizar contador visual
+            const countOpen = document.getElementById('count-open');
+            countOpen.innerText = parseInt(countOpen.innerText) + 1;
         }
 
-        // Inicialización de Gráfico
+        // --- INICIALIZACIÓN DE GRÁFICO ---
         const ctx = document.getElementById('supportChart').getContext('2d');
         new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['Resueltos', 'En Proceso', 'Pendientes'],
+                labels: ['Resueltos', 'Pendientes', 'En Proceso'],
                 datasets: [{
-                    data: [65, 20, 15],
-                    backgroundColor: ['#2e7d32', '#f9a825', '#d32f2f'],
+                    data: [12, 5, 3],
+                    backgroundColor: ['#2e7d32', '#d32f2f', '#1565c0'],
                     borderWidth: 0
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { position: 'bottom' } }
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
             }
         });
     </script>

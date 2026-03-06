@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración | SIGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <nav class="sidebar">
+        <h2 style="margin-bottom: 2rem;">SIN Bolivia</h2>
+        <ul class="nav-links">
+            <li><a href="index.html">📊 Dashboard Global</a></li>
+            <li><a href="tickets.html">🎫 Gestión de Tickets</a></li>
+            <li><a href="conocimiento.html">📚 Base de Conocimientos</a></li>
+            <li><a href="usuarios.html">👥 Usuarios Técnicos</a></li>
+            <li><a href="reportes.html">📈 Reportes</a></li>
+            <li><a href="configuracion.html">⚙️ Configuración</a></li>
+            <li><a href="personalizacion.html">🎨 Personalización</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <header style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+            <h1>Parámetros del Sistema y Seguridad</h1>
+            <button class="btn-theme" onclick="toggleTheme()">🌓 Cambiar Tema</button>
+        </header>
+
+        <div class="config-grid">
+            <section>
+                <div class="card">
+                    <h2>Seguridad y Acceso</h2>
+                    <div class="setting-item">
+                        <div>
+                            <strong>Autenticación de Dos Pasos (2FA)</strong>
+                            <p style="font-size: 0.8rem; opacity: 0.7;">Obligatorio para técnicos Nivel 2.</p>
+                        </div>
+                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <strong>Bloqueo por Intentos Fallidos</strong>
+                            <p style="font-size: 0.8rem; opacity: 0.7;">3 intentos máximo.</p>
+                        </div>
+                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Notificaciones</h2>
+                    <div class="setting-item">
+                        <span>Alertas de SLA por Email</span>
+                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="setting-item">
+                        <span>Alertas Críticas vía SMS</span>
+                        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="card">
+                    <h2>Logs de Auditoría (Recientes)</h2>
+                    <div class="log-entry">[2026-03-05 19:37] G. Jimenez inició sesión desde IP 190.181.x.x</div>
+                    <div class="log-entry">[2026-03-05 19:15] Cambio de estado Ticket #10293 a "En Proceso"</div>
+                    <div class="log-entry">[2026-03-05 18:40] Nuevo técnico registrado: R. Mendoza</div>
+                    <div class="log-entry" style="border-left-color: var(--danger);">[2026-03-05 17:22] Intento fallido de acceso: Usuario "admin_test"</div>
+                    <button style="margin-top: 15px; padding: 10px; width: 100%; cursor: pointer;" onclick="goToLogs()">Ver historial completo</button>
+                </div>
+
+                <div class="card" style="border-top: 5px solid var(--danger);">
+                    <h2 style="color: var(--danger);">Zona de Peligro</h2>
+                    <p style="font-size: 0.85rem; margin-bottom: 15px;">Acciones irreversibles sobre la base de datos.</p>
+                    <button style="background: var(--danger); color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;" onclick="clearCache()">Limpiar caché de incidentes resueltos</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="main.js"></script>
+</body>
+</html>
